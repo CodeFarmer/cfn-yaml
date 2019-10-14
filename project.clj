@@ -11,4 +11,5 @@
   
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}
-             :test {:resource-paths ["test-resources"]}})
+             :test {:resource-paths ["test-resources"]
+                    :plugins [[venantius/ultra "0.6.0"]]}})

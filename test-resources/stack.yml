@@ -44,3 +44,6 @@ Resources:
     Properties:
       RestApiId: !Ref 'Api'
       StageName: dev
+Outputs:
+  ApiRoot:
+    Value: !GetAtt 'Api.RootResourceId'

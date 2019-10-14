@@ -7,6 +7,9 @@
 (defn !Ref [logicalName]
   (tags/->!Ref logicalName))
 
+(defn !GetAtt [logicalName]
+  (tags/->!GetAtt logicalName))
+
 (defn !Cidr [ipBlock count cidrBits]
   (tags/->!Cidr ipBlock count cidrBits))
 

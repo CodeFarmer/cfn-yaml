@@ -39,7 +39,10 @@
     {:Type "AWS::ApiGateway::Deployment"
      :Properties
      {:RestApiId (!Ref "Api")
-      :StageName "dev"}}}})
+      :StageName "dev"}}}
+   
+   :Outputs
+   {:ApiRoot {:Value (!GetAtt "Api.RootResourceId")}}})
 
 (deftest parse
   (let [parsed-template (with-open [in (io/input-stream (io/resource "stack.yml"))]

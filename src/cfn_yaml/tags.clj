@@ -20,6 +20,13 @@
   (encode [data]
     data))
 
+(defrecord !GetAtt [logicalName]
+  yaml/YAMLCodec
+  (decode [data keywords]
+    data)
+  (encode [data]
+    data))
+
 (defrecord !Cidr [ipBlock count cidrBits]
   yaml/YAMLCodec
   (decode [data keywords]
@@ -37,6 +44,7 @@
 (defn constructors [get-constructor]
   (let [construct #(.construct (get-constructor %) %)]
     (->> [[!Ref #(->!Ref (.getValue %))]
+          [!GetAtt #(->!GetAtt (.getValue %))]
           [!Sub (fn [node]
                   (if (= NodeId/scalar (.getNodeId node))
                     (->!Sub (.getValue node) {})
@@ -74,6 +82,7 @@
                                         (NodeTuple. (represent-data k) (represent-data v)))
                                       DumperOptions$FlowStyle/BLOCK))]
     (->> [[!Ref #(scalar-node "!Ref" (:logicalName %))]
+          [!GetAtt #(scalar-node "!GetAtt" (:logicalName %))]
           [!Sub (fn [{:keys [string bindings]}]
                   (if (empty? bindings)
                     (scalar-node "!Sub" string :style (if (.contains string "\n")
