@@ -9,6 +9,10 @@
            (org.yaml.snakeyaml.representer Representer)
            (java.util LinkedHashMap)))
 
+
+(def aws-builtin-referrables ["AWS::AccountId" "AWS::Region" ])
+
+
 (defn decode-key [s keywords]
   (cond
     (and (string? s) (.contains s "/")) s ;; / means namespace separator in keywords
@@ -75,7 +79,8 @@
     @references))
 
 (defn find-referrables [template]
-  (let [referrables (atom (concat (->> template :Parameters keys (map name))
+  (let [referrables (atom (concat aws-builtin-referrables
+                                  (->> template :Parameters keys (map name))
                                   (->> template :Resources keys (map name))))]
     (walk/postwalk #(when (= cfn_yaml.tags.!Sub (type %))
                       (swap! referrables (fn [xs] (concat xs (keys (:bindings %)))))
