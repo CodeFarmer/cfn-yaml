@@ -47,3 +47,7 @@ Resources:
 Outputs:
   ApiRoot:
     Value: !GetAtt 'Api.RootResourceId'
+  Region:
+    Value: !Ref 'AWS::Region'
+  AccountId:
+    Value: !Ref 'AWS::AccountId'

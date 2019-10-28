@@ -42,7 +42,9 @@
       :StageName "dev"}}}
    
    :Outputs
-   {:ApiRoot {:Value (!GetAtt "Api.RootResourceId")}}})
+   {:ApiRoot   {:Value (!GetAtt "Api.RootResourceId")}
+    :Region    {:Value (!Ref "AWS::Region")}
+    :AccountId {:Value (!Ref "AWS::AccountId")}}})
 
 (deftest parse
   (let [parsed-template (with-open [in (io/input-stream (io/resource "stack.yml"))]
@@ -50,7 +52,7 @@
     (is (= template
            parsed-template))
     (is (= (slurp (io/resource "stack.yml"))
-           (sut/generate-string parsed-template)))))
+             (sut/generate-string parsed-template)))))
 
 (deftest validate-references
   (try
